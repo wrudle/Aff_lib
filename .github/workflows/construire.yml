@@ -1,0 +1,62 @@
+name: Construire les données
+
+# Régénère data/ et le gabarit à chaque mise à jour du glanage, des scripts ou
+# du fichier Excel des communes (celui-ci est cherché à la racine du dépôt).
+# Effectue les commits lui-même (GITHUB_TOKEN, rien à créer).
+
+on:
+  push:
+    paths:
+      - "glanage/**"
+      - "scripts/**"
+      - "sources/**"
+      - ".github/workflows/**"
+
+permissions:
+  contents: write
+
+jobs:
+  construire:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas openpyxl
+
+      - name: Construire le référentiel (si les scripts et le fichier source sont présents)
+        run: |
+          fichier=$(ls *.xlsx 2>/dev/null | head -1 || true)
+          if [ ! -f scripts/construire.py ]; then
+            echo "scripts/ pas encore présent, rien à construire."
+            exit 0
+          fi
+          if [ -n "$fichier" ]; then
+            echo "Fichier source trouvé : $fichier"
+            python scripts/construire.py referentiel --excel "$fichier"
+          else
+            echo "Aucun fichier Excel à la racine : référentiel actuel conservé."
+          fi
+
+      - name: Intégrer le glanage (si les scripts sont présents)
+        run: |
+          if [ ! -f scripts/construire.py ]; then exit 0; fi
+          for f in glanage/*.xlsx; do
+            [ -e "$f" ] || continue
+            python scripts/construire.py panneaux --excel "$f" || exit 1
+          done
+
+      - name: Générer le gabarit de glanage
+        run: |
+          if [ ! -f scripts/faire_gabarit.py ]; then exit 0; fi
+          python scripts/faire_gabarit.py
+
+      - name: Committer les données régénérées
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add data/ glanage/ 2>/dev/null || true
+          git diff --cached --quiet && echo "Rien à commiter" || git commit -m "Mise à jour des données panneaux [skip ci]"
+          git push
