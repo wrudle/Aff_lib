@@ -1,0 +1,176 @@
+:root {
+  --violet: #6d4c9f;
+  --violet-clair: #f0eaf8;
+  --texte: #303030;
+  --gris: #626262;
+  --fond: #fafafa;
+  --bord: #d9d4de;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Linux Biolinum", "Segoe UI", system-ui, sans-serif;
+  background: var(--fond);
+  color: var(--texte);
+}
+
+header {
+  padding: 14px 20px 12px;
+  border-bottom: 3px solid var(--violet);
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+header h1 { font-size: 1.35rem; margin: 0; color: var(--violet); }
+header h1 span { color: var(--gris); font-weight: normal; }
+.entete-infos { color: var(--gris); font-size: .95rem; }
+.entete-infos span { font-weight: bold; color: var(--texte); }
+
+main {
+  display: grid;
+  grid-template-columns: 360px 1fr 340px;
+  gap: 12px;
+  padding: 12px;
+  height: calc(100vh - 64px);
+}
+
+.bloc {
+  background: white;
+  border: 1px solid var(--bord);
+  border-radius: 8px;
+  padding: 12px;
+  overflow: auto;
+}
+
+.bloc h2 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  color: var(--violet);
+}
+
+.compteur {
+  font-size: .8rem;
+  color: var(--gris);
+  font-weight: normal;
+}
+
+#panneau-gauche, #panneau-droit {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+.liste-bloc { flex: 1; min-height: 120px; }
+
+.ligne-filtres { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+
+select, input[type="search"], button {
+  font-family: inherit;
+  font-size: .92rem;
+  padding: 7px 10px;
+  border: 1px solid var(--bord);
+  border-radius: 6px;
+  background: white;
+  color: var(--texte);
+}
+
+select, input[type="search"] { flex: 1; min-width: 120px; }
+
+button { cursor: pointer; }
+button:hover { border-color: var(--violet); }
+
+button.principal {
+  background: var(--violet);
+  color: white;
+  border-color: var(--violet);
+}
+button.principal:disabled { opacity: .45; cursor: not-allowed; }
+
+button.secondaire { background: var(--violet-clair); border-color: var(--bord); }
+
+#liste-communes, #liste-panneaux, #liste-tournee { list-style: none; margin: 0; padding: 0; }
+
+#liste-communes li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 4px;
+  border-bottom: 1px solid #f0edf3;
+  cursor: pointer;
+}
+
+#liste-communes li:hover { background: var(--violet-clair); }
+#liste-communes li input { accent-color: var(--violet); }
+#liste-communes .nom { flex: 1; }
+#liste-communes .nom em { font-style: normal; font-size: .72rem; color: white; background: var(--violet); border-radius: 4px; padding: 1px 5px; margin-left: 5px; }
+#liste-communes .meta { font-size: .78rem; color: var(--gris); white-space: nowrap; }
+
+#liste-panneaux li {
+  padding: 6px 4px 6px 10px;
+  border-bottom: 1px solid #f0edf3;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+}
+#liste-panneaux li:hover { background: var(--violet-clair); }
+#liste-panneaux li.dans-tournee { border-left-color: var(--violet); background: var(--violet-clair); }
+#liste-panneaux li .p-nom { font-weight: 500; }
+#liste-panneaux li .p-commune { display: block; font-size: .78rem; color: var(--gris); }
+
+#liste-tournee { padding-left: 22px; margin: 8px 0; }
+#liste-tournee li { padding: 3px 0; }
+#liste-tournee li button {
+  border: none; background: none; color: #b0435a; padding: 0 4px; font-size: .9rem;
+}
+#liste-tournee .t-info { color: var(--gris); font-size: .8rem; }
+
+.aide { font-size: .8rem; color: var(--gris); }
+.actions-tournee, .actions-umap { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+.actions-umap { border-top: 1px dashed var(--bord); padding-top: 10px; }
+
+#carte-bloc { position: relative; border: 1px solid var(--bord); border-radius: 8px; overflow: hidden; }
+#carte { position: absolute; inset: 0; }
+
+.legende {
+  position: absolute;
+  left: 10px; bottom: 10px;
+  background: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: .8rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,.25);
+  z-index: 500;
+}
+.puce { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin: 0 3px 0 8px; }
+.puce.selection { background: #9b76c9; border: 1px solid var(--violet); }
+.puce.panneau-l { background: #e05656; border-radius: 50%; }
+
+/* Marqueurs Leaflet des panneaux */
+.pin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: #e05656;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0,0,0,.4);
+}
+.pin-tournee { background: var(--violet); }
+
+.vide { color: var(--gris); font-style: italic; padding: 8px; }
+
+/* Leaflet : style des polygones et marqueurs */
+.leaflet-container { font-family: inherit; }
+
+@media (max-width: 1100px) {
+  main { grid-template-columns: 1fr; height: auto; }
+  #carte-bloc { height: 60vh; }
+}
