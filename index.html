@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Panneaux d'affichage libre - Isère</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCfWtdRWiIURYCAKhqrjPKg="
+        crossorigin="">
+</head>
+<body>
+  <header>
+    <h1>Panneaux d'affichage libre <span>· Isère</span></h1>
+    <div class="entete-infos">
+      <span id="stat-communes">0</span> communes ·
+      <span id="stat-pop">0</span> hab ·
+      <span id="stat-bal">0</span> BAL ·
+      <span id="stat-panneaux">0</span> panneaux glanés
+    </div>
+  </header>
+
+  <main>
+    <section id="panneau-gauche">
+      <div class="bloc">
+        <h2>Filtrer par zone</h2>
+        <div class="ligne-filtres">
+          <select id="type-zone">
+            <option value="">Toutes les communes</option>
+            <option value="arrondissement">Arrondissement</option>
+            <option value="canton">Canton</option>
+            <option value="intercommunalite">Intercommunalité</option>
+            <option value="circonscription">Circonscription législ.</option>
+          </select>
+          <select id="choix-zone" disabled></select>
+        </div>
+        <div class="ligne-filtres">
+          <input id="recherche" type="search" placeholder="Rechercher une commune…">
+          <button id="btn-tout" class="secondaire">Tout sélectionner</button>
+          <button id="btn-rien" class="secondaire">Tout désélectionner</button>
+        </div>
+      </div>
+
+      <div class="bloc liste-bloc">
+        <h2>Communes <span class="compteur" id="nb-affichees"></span></h2>
+        <ul id="liste-communes"></ul>
+      </div>
+    </section>
+
+    <section id="carte-bloc">
+      <div id="carte"></div>
+      <div class="legende">
+        <span class="puce selection"></span> sélectionnée
+        <span class="puce panneau-l"></span> panneau glané
+      </div>
+    </section>
+
+    <section id="panneau-droit">
+      <div class="bloc">
+        <h2>Ma tournée</h2>
+        <p class="aide">Cliquez sur un panneau (liste ou carte) pour l'ajouter à la tournée.</p>
+        <ol id="liste-tournee"></ol>
+        <div class="actions-tournee">
+          <button id="btn-gpx">Exporter GPX (GPS)</button>
+          <button id="btn-csv" class="secondaire">CSV</button>
+          <button id="btn-geojson" class="secondaire">GeoJSON</button>
+          <button id="btn-vider" class="secondaire">Vider</button>
+        </div>
+        <div class="actions-umap">
+          <button id="btn-umap-zone" class="principal" disabled>Ouvrir uMap (zone filtrée)</button>
+          <button id="btn-umap-tout" class="principal">Ouvrir uMap (tous les panneaux)</button>
+        </div>
+        <p class="aide">Les liens uMap créent une nouvelle carte pré-remplie ; la carte
+        principale peut aussi lire directement les données distantes (voir README).</p>
+      </div>
+
+      <div class="bloc liste-bloc">
+        <h2>Panneaux <span class="compteur" id="nb-panneaux-selection"></span></h2>
+        <ul id="liste-panneaux"></ul>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+          crossorigin=""></script>
+  <script src="app.js"></script>
+</body>
+</html>
