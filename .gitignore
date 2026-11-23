@@ -1,0 +1,10 @@
+# Les caches sources sont retéléchargeables automatiquement par construire.py
+sources/circonscriptions_38.geojson
+sources/api_communes_38.json
+
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+node_modules/
+.vercel/
